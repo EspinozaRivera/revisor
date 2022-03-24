@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Contracts\Validation\Validator as ValidationValidator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
 
 class AuthController extends Controller
 {
@@ -27,20 +25,51 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login(Request $request)
     {
-        $credentials = request(['email', 'password']);
+        // $credentials = request(['email', 'password']);
 
-        if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        // if (!$token = auth()->attempt($credentials)) {
+        //     return response()->json(['error' => 'Unauthorized'], 401);
+        // }
+
+        // return $this->respondWithToken($token);
+
+        $credentials = $request->only('email', 'password');
+        $validator = Validator::make($credentials, [
+            'email' => 'required',
+            'password' => 'required'
+        ]);
+
+        if ( ! $validator-> fails() ) {
+            try {
+                if (! $token = JWTAuth::attempt($credentials)){
+                     return response()->json([
+                        'status' => false,
+                        'message' => 'credenciales invalidas'
+                     ]);
+                }
+            } catch ( \Tymon\JWTAuth\Exceptions\JWTExceptios $e) { 
+                return response()->json([
+                    'status' => false,
+                    'error' => $e->getMessage(),
+                    'message' => 'credenciales invalidas'
+                 ]);
+                
+            }
+            
+            return response()->json([
+                'status' => true,
+                'error' => compact('token'),
+                'message' => 'credenciales validas'
+             ]);
+            
+        }else{
+            return response()->json([
+                'status' => false,
+                'error' => $validator->errors()
+            ]);
         }
-
-        return $this->respondWithToken($token);
-
-        // $credentials = $request->only('email', 'password');
-        // $validator = ValidationValidator::make($credentials, [
-        //     'id' => ''
-        // ]);
     }
 
     /**

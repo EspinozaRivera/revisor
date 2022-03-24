@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -41,30 +42,28 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        if ( ! $validator-> fails() ) {
+        if (!$validator->fails()) {
             try {
-                if (! $token = JWTAuth::attempt($credentials)){
-                     return response()->json([
+                if (!$token = JWTAuth::attempt($credentials)) {
+                    return response()->json([
                         'status' => false,
                         'message' => 'credenciales invalidas'
-                     ]);
+                    ]);
                 }
-            } catch ( \Tymon\JWTAuth\Exceptions\JWTExceptios $e) { 
+            } catch (\Tymon\JWTAuth\Exceptions\JWTExceptios $e) {
                 return response()->json([
                     'status' => false,
                     'error' => $e->getMessage(),
                     'message' => 'credenciales invalidas'
-                 ]);
-                
+                ]);
             }
-            
+
             return response()->json([
                 'status' => true,
-                'error' => compact('token'),
+                'token' => compact('token'),
                 'message' => 'credenciales validas'
-             ]);
-            
-        }else{
+            ]);
+        } else {
             return response()->json([
                 'status' => false,
                 'error' => $validator->errors()
@@ -79,8 +78,30 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return response()->json(auth()->user());
+        try {
+            return response()->json(auth()->user());
+        } catch (Exception $e) {
+            if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Token expirado'
+                ]);
+            } else {
+                if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Token invalido'
+                    ]);
+                } else {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Se requiere el roken'
+                    ]);
+                }
+            }
+        }
     }
+
 
     /**
      * Log the user out (Invalidate the token).

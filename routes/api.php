@@ -26,6 +26,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
 
 //Necesita token
 Route::group(['prefix'=> 'admin','middleware' => ['jwt.verify']], function () {
+    Route::post('/login', [AuthController::class, 'login']);
     Route::post('/me', [AuthController::class, 'me']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::post('/logout', [AuthController::class, 'logout']);

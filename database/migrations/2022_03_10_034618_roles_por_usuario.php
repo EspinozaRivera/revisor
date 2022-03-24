@@ -13,6 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
+        //aqui no hay status, se borra directamente el premiso a la bencha
         Schema::create('rolesPorUsuario', function (Blueprint $table) {
             $table->id('idRolesPorUsuario');
             $table->integer('idUsuarios');

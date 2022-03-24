@@ -38,14 +38,4 @@ class Usuario extends Model
     {
         return [];
     }
-
-    // protected function setCURPAttribute($curp)
-    // {
-    //     return strtoupper($curp);
-    // }
-
-    // protected function setCorreoAttribute($correo)
-    // {
-    //     return strtolower($correo);
-    // }
 }

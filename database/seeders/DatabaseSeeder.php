@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Rol;
+use App\Models\RolPorUsuario;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -42,5 +43,25 @@ class DatabaseSeeder extends Seeder
         $rol6 = new Rol();
         $rol6->nombre = 'fan';
         $rol6->save();
+
+        $user =  new User();
+        $user->curp = 'EIRJ980922MSLSVV02';
+        $user->nombre = 'nombre';
+        $user->apellido1 = 'ap1';
+        $user->apellido2 = 'ap2';
+        $user->email = 'jotasbb@gmail.com';
+        $user->password = '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'; // password
+        $user->status = 1;
+        $user->save();
+
+        $rolPorUsuario = new RolPorUsuario();
+        $rolPorUsuario->idUsuario = 1;
+        $rolPorUsuario->idRol = 1;
+        $rolPorUsuario->save();
+
+        $rolPorUsuario1 = new RolPorUsuario();
+        $rolPorUsuario1->idUsuario = 1;
+        $rolPorUsuario1->idRol = 2;
+        $rolPorUsuario1->save();
     }
 }

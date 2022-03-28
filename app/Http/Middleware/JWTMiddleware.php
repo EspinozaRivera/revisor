@@ -35,7 +35,7 @@ class JWTMiddleware
                 } else {
                     return response()->json([
                         'status' => false,
-                        'message' => 'Se requiere el roken'
+                        'message' => 'Se requiere el token'
                     ]);
                 }
             }

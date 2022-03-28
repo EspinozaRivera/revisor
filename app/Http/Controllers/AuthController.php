@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
+use App\Models\RolPorUsuario;
+use App\Models\Rol;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -78,8 +80,33 @@ class AuthController extends Controller
      */
     public function me()
     {
+
+
         try {
-            return response()->json(auth()->user());
+            $token = auth()->user(); //info del usuario, los campos mostrados estan en el modelo "user"
+
+            $rolesPorUsuario[] = RolPorUsuario::where('idUsuario', $token->{'id'})->get(); //muestra los roles (solo los id´s)
+            $contar = RolPorUsuario::where('idUsuario', $token->{'id'})->get()->count(); //cuenta rols hay cuantos son 
+
+            //recopilacion de los roles del usuario
+            for ($i = 0; $i < $contar; $i++) {
+                $Rol[] = Rol::where('id', $rolesPorUsuario[0][$i]->{'idRol'})->get();
+                $nombre[$i] = $Rol[$i][0]->{'nombre'};
+            }
+
+            return response()->json([
+                'id' => $token->{'id'},
+                'curp' => $token->{'curp'},
+                'nombre' => $token->{'nombre'},
+                'apellido1' => $token->{'apellido1'},
+                'apellido2' => $token->{'apellido2'},
+                'correo' => $token->{'email'},
+                'roles' => $nombre,
+                'estatus' => $token->{'status'}
+            ]);
+
+            //return response()->json(auth()->user());
+
         } catch (Exception $e) {
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
                 return response()->json([
@@ -95,7 +122,7 @@ class AuthController extends Controller
                 } else {
                     return response()->json([
                         'status' => false,
-                        'message' => 'Se requiere el roken'
+                        'message' => 'Se requiere el token'
                     ]);
                 }
             }
@@ -110,7 +137,12 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        auth()->logout();
+        try {
+            auth()->logout();
+        } catch (Exception $e) {
+            return  $e->getMessage();
+        }
+
 
         return response()->json(['message' => 'Successfully logged out']);
     }
@@ -153,7 +185,7 @@ class AuthController extends Controller
             'status' => 'required|boolean'
         ]);
         if ($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
+            return response()->json($validator->errors(), 400);
         }
 
         $user = User::create(array_merge(

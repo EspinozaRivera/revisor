@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\userController;
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -14,20 +14,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 //No nececit tokesn
-Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
+Route::group(['prefix' => 'auth', 'middleware' => 'api'], function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
+    
 });
 
 //Necesita token
-Route::group(['prefix'=> 'admin','middleware' => ['jwt.verify']], function () {
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/me', [AuthController::class, 'me']);
-    Route::post('/refresh', [AuthController::class, 'refresh']);
+Route::group(['prefix' => 'admin', 'middleware' => ['jwt.verify']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/me', [AuthController::class, 'me']);
+    Route::post('/refresh', [AuthController::class, 'refresh']);        
+    Route::get('/usuarios', [userController::class, 'index']);
+    Route::get('/usuarios/{id}', [userController::class, 'show']);
 });

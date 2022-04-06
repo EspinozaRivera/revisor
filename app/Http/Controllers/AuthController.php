@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use App\Models\RolPorUsuario;
-use App\Models\Rol;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -13,31 +12,13 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    /**
-     * Create a new AuthController instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
-    /**
-     * Get a JWT via given credentials.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function login(Request $request)
     {
-        // $credentials = request(['email', 'password']);
-
-        // if (!$token = auth()->attempt($credentials)) {
-        //     return response()->json(['error' => 'Unauthorized'], 401);
-        // }
-
-        // return $this->respondWithToken($token);
-
         $credentials = $request->only('email', 'password');
         $validator = Validator::make($credentials, [
             'email' => 'required',
@@ -52,7 +33,7 @@ class AuthController extends Controller
                         'message' => 'credenciales invalidas'
                     ]);
                 }
-            } catch (\Tymon\JWTAuth\Exceptions\JWTExceptios $e) {
+            } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
                 return response()->json([
                     'status' => false,
                     'error' => $e->getMessage(),
@@ -64,6 +45,7 @@ class AuthController extends Controller
                 'status' => true,
                 'token' => compact('token'),
                 'message' => 'credenciales validas'
+
             ]);
         } else {
             return response()->json([
@@ -73,26 +55,15 @@ class AuthController extends Controller
         }
     }
 
-    /**
-     * Get the authenticated User.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function me()
     {
-
-
         try {
             $token = auth()->user(); //info del usuario, los campos mostrados estan en el modelo "user"
 
-            $rolesPorUsuario[] = RolPorUsuario::where('idUsuario', $token->{'id'})->get(); //muestra los roles (solo los id´s)
-            $contar = RolPorUsuario::where('idUsuario', $token->{'id'})->get()->count(); //cuenta rols hay cuantos son 
-
-            //recopilacion de los roles del usuario
-            for ($i = 0; $i < $contar; $i++) {
-                $Rol[] = Rol::where('id', $rolesPorUsuario[0][$i]->{'idRol'})->get();
-                $nombre[$i] = $Rol[$i][0]->{'nombre'};
-            }
+            $rolesPorUsuario = RolPorUsuario::select('roles.id', 'roles.nombre')
+                ->join('roles', 'rolesPorUsuario.idRol', '=', 'roles.id')
+                ->where('rolesPorUsuario.idUsuario', $token->{'id'})
+                ->get();
 
             return response()->json([
                 'id' => $token->{'id'},
@@ -101,11 +72,9 @@ class AuthController extends Controller
                 'apellido1' => $token->{'apellido1'},
                 'apellido2' => $token->{'apellido2'},
                 'correo' => $token->{'email'},
-                'roles' => $nombre,
-                'estatus' => $token->{'status'}
+                'roles' => $rolesPorUsuario,
+                'estatus' => $token->{'estatus'}
             ]);
-
-            //return response()->json(auth()->user());
 
         } catch (Exception $e) {
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
@@ -129,41 +98,21 @@ class AuthController extends Controller
         }
     }
 
-
-    /**
-     * Log the user out (Invalidate the token).
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function logout()
     {
         try {
             auth()->logout();
+            return response()->json(['message' => 'Successfully logged out']);
         } catch (Exception $e) {
             return  $e->getMessage();
         }
-
-
-        return response()->json(['message' => 'Successfully logged out']);
     }
 
-    /**
-     * Refresh a token.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function refresh()
     {
         return $this->respondWithToken(auth()->refresh());
     }
 
-    /**
-     * Get the token array structure.
-     *
-     * @param  string $token
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     protected function respondWithToken($token)
     {
         return response()->json([
@@ -182,7 +131,7 @@ class AuthController extends Controller
             'apellido2' => 'string',
             'email' => 'required|string|email|max:100|unique:users',
             'password' => 'required|string|min:6',
-            'status' => 'required|boolean'
+            'estatus' => 'required|boolean'
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
@@ -195,7 +144,8 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => '¡Usuario registrado exitosamente!',
-            'user' => $user
+            'user' => $user,
+            'status' => true
         ], 201);
     }
 }

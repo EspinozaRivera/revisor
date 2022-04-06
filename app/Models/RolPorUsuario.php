@@ -10,4 +10,10 @@ class RolPorUsuario extends Model
     use HasFactory;
 
     protected $table = "rolesPorUsuario";
+
+    protected $fillable = [
+        'idUsuario',
+        'idRol',
+        'estatus'
+    ];
 }

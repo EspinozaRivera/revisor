@@ -2,26 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\RolPorUsuario;
+use App\Models\ModuloPorRol;
 use Illuminate\Http\Request;
 
-class RolesPorUsuarioController extends Controller
+class ModuloPorRolController extends Controller
 {
     public function show($id)
     {
         try {
-            $RolPUsr = RolPorUsuario::select('rolesPorUsuario.id', 'roles.id as idRol', 'roles.nombre')
-                ->join('roles', 'rolesPorUsuario.idRol', '=', 'roles.id')
-                ->where('rolesPorUsuario.idUsuario', $id)
+            $modPorRol = ModuloPorRol::select('modulosPorRol.id', 'modulos.id as idModulo', 'modulos.nombre')
+                ->join('modulos', 'modulosPorRol.idModulo', '=', 'modulos.id')
+                ->where('modulosPorRol.idRol', $id)
                 ->get();
 
-            if ($RolPUsr->count() <= 0) {
+            if ($modPorRol->count() <= 0) {
                 return response()->json([
                     'status' => false,
                     'message' => 'rol no encontrado'
                 ]);
             }
-            return $RolPUsr;
+            return $modPorRol;
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,
@@ -33,35 +33,35 @@ class RolesPorUsuarioController extends Controller
     public function store(Request $request)
     {
         try {
-            $rolPUsr = new RolPorUsuario();
-            $rolPUsr->idUsuario = $request->idUsuario;
-            $rolPUsr->idRol = $request->idRol;
-            $rolPUsr->save();
+            $modPorRol = new ModuloPorRol();
+            $modPorRol->idRol = $request->idRol;
+            $modPorRol->idModulo = $request->idModulo;
+            $modPorRol->save();
 
             return response()->json([
                 'status' => true,
-                'message' => 'Rol asignado',
+                'message' => 'modulo asignado al rol',
             ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,
-                'message' => 'error al agregar'
+                'message' => 'error al asignar el modulo al rol'
             ]);
         }
     }
 
-    public function destroy(RolPorUsuario $rolPUsr)
+    public function destroy(ModuloPorRol $modPorRol)
     {
         try {
-            $rolPUsr->delete();
+            $modPorRol->delete();
             return response()->json([
                 'status' => true,
-                'message' => 'rol del usuario borrado'
+                'message' => 'modulo del rol borrado'
             ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,
-                'message' => 'error al borrar rol del usuario'
+                'message' => 'error al borrar modulo del rol'
             ]);
         }
     }

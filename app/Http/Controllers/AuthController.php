@@ -60,10 +60,10 @@ class AuthController extends Controller
         try {
             $token = auth()->user(); //info del usuario, los campos mostrados estan en el modelo "user"
 
-            $rolesPorUsuario = RolPorUsuario::select('roles.id', 'roles.nombre')
-                ->join('roles', 'rolesPorUsuario.idRol', '=', 'roles.id')
-                ->where('rolesPorUsuario.idUsuario', $token->{'id'})
-                ->get();
+            // $rolesPorUsuario = RolPorUsuario::select('roles.id', 'roles.nombre')
+            //     ->join('roles', 'rolesPorUsuario.idRol', '=', 'roles.id')
+            //     ->where('rolesPorUsuario.idUsuario', $token->{'id'})
+            //     ->get();
 
             return response()->json([
                 'id' => $token->{'id'},
@@ -72,7 +72,7 @@ class AuthController extends Controller
                 'apellido1' => $token->{'apellido1'},
                 'apellido2' => $token->{'apellido2'},
                 'correo' => $token->{'email'},
-                'roles' => $rolesPorUsuario,
+                //'roles' => $rolesPorUsuario,
                 'estatus' => $token->{'estatus'}
             ]);
 

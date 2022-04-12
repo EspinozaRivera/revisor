@@ -24,7 +24,7 @@ Route::middleware(['cors'])->group(function () {
         //usuarios
         Route::get('/usuarios', [userController::class, 'index']);
         Route::get('/usuarios/{id}', [userController::class, 'show']);
-        Route::put('/usuarios/{id}/editar', [userController::class, 'update']);
+        Route::put('/usuarios/editar/{id}', [userController::class, 'update']);
 
         //roles
         Route::get('/roles', [RolController::class, 'index']);

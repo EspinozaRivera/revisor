@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call(RolSeeder::class);
+        
         // \App\Models\User::factory(10)->create();
         //User::factory(50)->create();
         //Rol::factory(5)->create();
@@ -61,6 +63,11 @@ class DatabaseSeeder extends Seeder
         $user->password = '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'; // password
         $user->estatus = true;
         $user->save();
+        $user->assignRole('administrador');
+        // $user->assignRole('administradorEquipo');
+        // $user->assignRole('administradorTorneo');
+        // $user->assignRole('fan');
+
  
         // $rolPorUsuario1 = new RolPorUsuario();
         // $rolPorUsuario1->idUsuario = 1;
@@ -116,6 +123,6 @@ class DatabaseSeeder extends Seeder
         // $modulosPorRol4->idModulo = 4;
         // $modulosPorRol4->save();
 
-        $this->call(RolSeeder::class);
+        
     }
 }

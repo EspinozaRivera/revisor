@@ -65,6 +65,11 @@ class AuthController extends Controller
             //     ->where('rolesPorUsuario.idUsuario', $token->{'id'})
             //     ->get();
 
+            $RolPUsr = RolPorUsuario::select('model_has_roles.role_id', 'roles.name')
+                ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+                ->where('model_has_roles.model_id', $token->{'id'})
+                ->get();
+
             return response()->json([
                 'id' => $token->{'id'},
                 'curp' => $token->{'curp'},
@@ -72,10 +77,9 @@ class AuthController extends Controller
                 'apellido1' => $token->{'apellido1'},
                 'apellido2' => $token->{'apellido2'},
                 'correo' => $token->{'email'},
-                //'roles' => $rolesPorUsuario,
+                'roles' => $RolPUsr,
                 'estatus' => $token->{'estatus'}
             ]);
-
         } catch (Exception $e) {
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
                 return response()->json([
@@ -102,7 +106,10 @@ class AuthController extends Controller
     {
         try {
             auth()->logout();
-            return response()->json(['message' => 'Successfully logged out']);
+            return response()->json([
+                'message' => 'Successfully logged out',
+                'status' => true
+            ]);
         } catch (Exception $e) {
             return  $e->getMessage();
         }

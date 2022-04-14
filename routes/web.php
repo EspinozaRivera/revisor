@@ -15,15 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['cors'])->group(function () {
-    Route::get('login', [loginController::class, 'show']); //proximo a cambios
+// Route::middleware(['cors'])->group(function () {
+//     Route::get('login', [loginController::class, 'show']); //proximo a cambios
 
-    Route::get('usuarios', [UsuariosController::class, 'index']);
+//     Route::get('usuarios', [UsuariosController::class, 'index']);
 
-    Route::post('usuarios/agregar', [UsuariosController::class, 'store']);
+//     Route::post('usuarios/agregar', [UsuariosController::class, 'store']);
 
-    Route::get('usuarios/{idUsuario}', [UsuariosController::class, 'show']);
+//     Route::get('usuarios/{idUsuario}', [UsuariosController::class, 'show']);
 
-    Route::get('usuarios/{idUsuario}/edit', [UsuariosController::class, 'edit']);
-});
+//     Route::get('usuarios/{idUsuario}/edit', [UsuariosController::class, 'edit']);
+// });
 

@@ -8,11 +8,6 @@ use Illuminate\Database\Seeder;
 
 class RolSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         $role1 = Role::create(['name' => 'administrador']);
@@ -22,9 +17,36 @@ class RolSeeder extends Seeder
         $role5 = Role::create(['name' => 'jugador']);
         $role6 = Role::create(['name' => 'fan']);
 
-        $permission = Permission::create(['name' => 'user.index'])->syncRoles([$role1]);
-        $permission = Permission::create(['name' => 'user.show'])->syncRoles([$role1]);
-        $permission = Permission::create(['name' => 'user.update'])->syncRoles([$role1]);
-        $permission = Permission::create(['name' => 'user.destroy'])->syncRoles([$role1]);
+        /*  
+            index:      consultar todos los registros
+            show:       Consultar un registro
+            store:      Agregar un registro
+            update:     Editar registro
+            destroy:    Eliminar registro o cambiar estatus de registro
+        */
+
+        //Usuarios
+        Permission::create(['name' => 'User.index'])->syncRoles([$role1]);
+        Permission::create(['name' => 'User.show'])->syncRoles([$role1]);
+        //Permission::create(['name' => 'User.store']);     //Solo está la opcion de crear usuario desde el registrar por lo cual no se necesita el permiso
+        Permission::create(['name' => 'User.update'])->syncRoles([$role1]);
+        //Permission::create(['name' => 'User.destroy'])->syncRoles([$role1]);      //Como dijo un filosofo, los usuarios no se borran solo se les cambia el 
+                                                                                    //estatus xd(desde el editar)
+        //Roles
+        Permission::create(['name' => 'Role.index'])->syncRoles([$role1]);
+        Permission::create(['name' => 'Role.show'])->syncRoles([$role1]);
+        Permission::create(['name' => 'Role.store'])->syncRoles([$role1]);
+        Permission::create(['name' => 'Role.update'])->syncRoles([$role1]);
+        Permission::create(['name' => 'Role.destroy'])->syncRoles([$role1]);
+
+        //Permisos
+        Permission::create(['name' => 'Permission.index'])->syncRoles([$role1]);
+        Permission::create(['name' => 'Permission.show'])->syncRoles([$role1]);
+
+        //Roles por usuario
+        Permission::create(['name' => 'RolPorUsuario.show'])->syncRoles([$role1]);
+
+        //Permisos por rol
+        Permission::create(['name' => 'PermisoPorRol.show'])->syncRoles([$role1]);
     }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\ModuloPorRolController;
 use App\Http\Controllers\modulosController;
 use App\Http\Controllers\PermisosController;
 use App\Http\Controllers\PermisosPorRolController;
+use App\Http\Controllers\RevisionCotroller;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\RolesPorUsuarioController;
 use App\Http\Controllers\userController;
@@ -46,5 +47,11 @@ Route::middleware(['cors'])->group(function () {
 
         //permisos por rol
         Route::get('/permisosPorRol/{id}', [PermisosPorRolController::class, 'show']);
+
+        //revisiones
+        Route::get('/revision', [RevisionCotroller::class, 'index']);
+        Route::get('/revision/{id}', [RevisionCotroller::class, 'show']);
+        Route::post('/revision/agregar', [RevisionCotroller::class, 'store']);
+        
     });
 });

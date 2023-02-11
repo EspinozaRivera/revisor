@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class Revision extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        //aqui no hay status, se borra directamente el premiso a la bencha
-        Schema::create('rolesPorUsuario', function (Blueprint $table) {
+        Schema::create('revision', function (Blueprint $table) {
             $table->id();
-            $table->integer('idUsuario');
-            $table->integer('idRol');
+            $table->string('titulo');
+            $table->longText('documento');
+            $table->string('revisor1');
+            $table->string('revisor2')->nullable();
+            $table->string('revisor3')->nullable();
+            $table->boolean('estatus');
             $table->timestamps();
         });
     }
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rolesPorUsuario');
+        Schema::dropIfExists('revision');
     }
-};
+}

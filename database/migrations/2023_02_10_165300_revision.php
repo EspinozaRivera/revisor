@@ -16,6 +16,7 @@ class Revision extends Migration
         Schema::create('revision', function (Blueprint $table) {
             $table->id();
             $table->string('titulo');
+            $table->string('nombreDoc');
             $table->longText('documento');
             $table->string('revisor1');
             $table->string('revisor2')->nullable();

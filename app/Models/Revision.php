@@ -14,6 +14,7 @@ class Revision extends Model
     protected $fillable = [
         'id',
         'titulo',
+        'nombreDoc',
         'documento',
         'revisor1',
         'revisor2',

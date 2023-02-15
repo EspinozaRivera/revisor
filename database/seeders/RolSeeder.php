@@ -11,11 +11,8 @@ class RolSeeder extends Seeder
     public function run()
     {
         $role1 = Role::create(['name' => 'administrador']);
-        $role2 = Role::create(['name' => 'administradorEquipo']);
-        $role3 = Role::create(['name' => 'administradorTorneo']);
-        $role4 = Role::create(['name' => 'arbitro']);
-        $role5 = Role::create(['name' => 'jugador']);
-        $role6 = Role::create(['name' => 'fan']);
+        $role2 = Role::create(['name' => 'directivo']);
+        $role3 = Role::create(['name' => 'revisor']);
 
         /*  
             index:      consultar todos los registros
@@ -31,7 +28,8 @@ class RolSeeder extends Seeder
         //Permission::create(['name' => 'User.store']);     //Solo está la opcion de crear usuario desde el registrar por lo cual no se necesita el permiso
         Permission::create(['name' => 'User.update'])->syncRoles([$role1]);
         //Permission::create(['name' => 'User.destroy'])->syncRoles([$role1]);      //Como dijo un filosofo, los usuarios no se borran solo se les cambia el 
-                                                                                    //estatus xd(desde el editar)
+        //estatus xd(desde el editar)
+
         //Roles
         Permission::create(['name' => 'Role.index'])->syncRoles([$role1]);
         Permission::create(['name' => 'Role.show'])->syncRoles([$role1]);
@@ -48,5 +46,14 @@ class RolSeeder extends Seeder
 
         //Permisos por rol
         Permission::create(['name' => 'PermisoPorRol.show'])->syncRoles([$role1]);
+
+        //Revisiones
+        Permission::create(['name' => 'Revision.index'])->syncRoles([$role1, $role2]);
+        Permission::create(['name' => 'Revision.show'])->syncRoles([$role1, $role2]);
+        Permission::create(['name' => 'Revision.store'])->syncRoles([$role1, $role2]);
+
+        //Validador
+        Permission::create(['name' => 'Validador.index'])->syncRoles([$role1, $role2, $role3]);
+        Permission::create(['name' => 'Validador.update'])->syncRoles([$role1, $role2, $role3]);
     }
 }

@@ -5,9 +5,11 @@ use App\Http\Controllers\ModuloPorRolController;
 use App\Http\Controllers\modulosController;
 use App\Http\Controllers\PermisosController;
 use App\Http\Controllers\PermisosPorRolController;
+use App\Http\Controllers\RevisionCotroller;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\RolesPorUsuarioController;
 use App\Http\Controllers\userController;
+use App\Http\Controllers\validadorController;
 use Illuminate\Support\Facades\Route;
 
 //No nececit tokesn
@@ -46,5 +48,16 @@ Route::middleware(['cors'])->group(function () {
 
         //permisos por rol
         Route::get('/permisosPorRol/{id}', [PermisosPorRolController::class, 'show']);
+
+        //revisiones
+        Route::get('/revision', [RevisionCotroller::class, 'index']);
+        Route::get('/revision/{id}', [RevisionCotroller::class, 'show']);
+        Route::post('/revision/agregar', [RevisionCotroller::class, 'store']);
+
+        //validador
+        Route::get('/validador',[validadorController::class, 'index']);
+        Route::put('/validador/{id}', [validadorController::class, 'update']);
+
+        
     });
 });

@@ -19,8 +19,11 @@ class Revision extends Migration
             $table->string('nombreDoc');
             $table->longText('documento');
             $table->string('revisor1');
-            $table->string('revisor2')->nullable();
-            $table->string('revisor3')->nullable();
+            $table->boolean('r1')->nullable();
+            $table->string('revisor2');
+            $table->boolean('r2')->nullable();
+            $table->string('revisor3');
+            $table->boolean('r3')->nullable();
             $table->boolean('estatus');
             $table->timestamps();
         });

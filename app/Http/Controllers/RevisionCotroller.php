@@ -9,6 +9,13 @@ use phpDocumentor\Reflection\Element;
 
 class RevisionCotroller extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:Revision.index')->only('index');
+        $this->middleware('can:Revision.show')->only('show');
+        $this->middleware('can:Revision.store')->only('store');
+    }
+
     public function index()
     {
         try {
@@ -37,8 +44,11 @@ class RevisionCotroller extends Controller
                     'nombreDoc' => $revisiones->nombreDoc,
                     'documento' => $revisiones->documento,
                     'revisor1' => $revisiones->revisor1,
-                    'revisor3' => $revisiones->revisor2,
-                    'revisor2' => $revisiones->revisor3,
+                    'r1' => $revisiones->r1,
+                    'revisor2' => $revisiones->revisor2,
+                    'r2' => $revisiones->r2,
+                    'revisor3' => $revisiones->revisor3,
+                    'r3' => $revisiones->r3,
                     'estatus' => $revisiones->estatus,
                     'status' => true
                 ]);

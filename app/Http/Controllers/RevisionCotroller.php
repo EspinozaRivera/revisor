@@ -79,8 +79,8 @@ class RevisionCotroller extends Controller
             $revision->revisor3 = $request->revisor3;
             $revision->estatus =  $request->estatus;
 
-            $filename = ($revision->nombreDoc);
-            file_put_contents($filename, base64_decode($revision->documento));
+            //$filename = ($revision->nombreDoc);
+            //file_put_contents($filename, base64_decode($revision->documento));
 
             $revision->save();
             return response()->json([

@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Revision;
-use Illuminate\Support\Facades\Storage;
-use phpDocumentor\Reflection\Element;
+use App\Mail\CorreoValidadorMailable;
+use Illuminate\Support\Facades\Mail;
 
 class RevisionCotroller extends Controller
 {
@@ -78,11 +78,13 @@ class RevisionCotroller extends Controller
             $revision->revisor2 = $request->revisor2;
             $revision->revisor3 = $request->revisor3;
             $revision->estatus =  $request->estatus;
-
+            $revision->save();
             //$filename = ($revision->nombreDoc);
             //file_put_contents($filename, base64_decode($revision->documento));
 
-            $revision->save();
+            $correo = new CorreoValidadorMailable($revision);
+            Mail::to('pepejavichuy@gmail.com')->send($correo);
+
             return response()->json([
                 'message' => '¡Revision en espera de aprobacion!',
                 'status' => true

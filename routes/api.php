@@ -57,7 +57,5 @@ Route::middleware(['cors'])->group(function () {
         //validador
         Route::get('/validador',[validadorController::class, 'index']);
         Route::put('/validador/{id}', [validadorController::class, 'update']);
-
-        
     });
 });

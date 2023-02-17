@@ -72,7 +72,6 @@ class AuthController extends Controller
 
             return response()->json([
                 'id' => $token->{'id'},
-                'curp' => $token->{'curp'},
                 'nombre' => $token->{'nombre'},
                 'apellido1' => $token->{'apellido1'},
                 'apellido2' => $token->{'apellido2'},
@@ -132,7 +131,6 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'curp' => 'required|string|max:18',
             'nombre' => 'required|string',
             'apellido1' => 'required|string',
             'apellido2' => 'string',

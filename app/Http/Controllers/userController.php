@@ -37,7 +37,6 @@ class userController extends Controller
 
                 return response()->json([
                     'id' => $usuario->id,
-                    'curp' =>  $usuario->curp,
                     'nombre' =>  $usuario->nombre,
                     'apellido1' =>  $usuario->apellido1,
                     'apellido2' =>  $usuario->apellido2,
@@ -62,7 +61,6 @@ class userController extends Controller
 
         try {
             if ($usuario->count() > 0) {
-                $usuario->curp = $request->curp;
                 $usuario->nombre = $request->nombre;
                 $usuario->apellido1 = $request->apellido1;
                 $usuario->apellido2 = $request->apellido2;
@@ -82,7 +80,6 @@ class userController extends Controller
 
                 return response()->json([
                     // 'id' => $usuario->id,
-                    // 'curp' => $usuario->curp,
                     // 'nombre' => $usuario->nombre,
                     // 'apellido1' => $usuario->apellido1,
                     // 'apellido2' => $usuario->apellido2,

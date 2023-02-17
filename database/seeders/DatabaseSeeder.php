@@ -17,7 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RolSeeder::class);
         
         $user =  new User();
-        $user->curp = 'XEXX010101HNEXXXA4';
         $user->nombre = 'administrador';
         $user->apellido1 = 'ap1';
         $user->apellido2 = 'ap2';

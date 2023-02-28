@@ -37,10 +37,6 @@ php artisan serve
 * [Sptie](https://spatie.be/docs/laravel-permission/v4/introduction)
 * [JWT](https://jwt-auth.readthedocs.io/en/develop/)
 
-### Credenciales
-correosvalidatoruas@gmail.com
-Laravel777@
-
 ***
 
 # Endpoints

@@ -1,9 +1,9 @@
-#Validador
+# Validador
 Servicio para la validacion de documentos mediante usuarios validadores.
 
 ***
 
-##Requisitos
+## Requisitos
 ~~~
 Composer 2.5.*
 Laravel Framework 8.*
@@ -14,7 +14,7 @@ MySQL 7.*
 
 ***
 
-##Instalacion
+## Instalacion
 Es necesario tener el ***.env*** confirgurado antes de comensar con la instalacion
 eso incluye la configuracion de la **BD** y el **MAIL**.
 Ejecutar los siguienes comandos desde la carpeta raiz del proyecto
@@ -24,28 +24,30 @@ Ejecutar los siguienes comandos desde la carpeta raiz del proyecto
 
 ***
 
-##Ejecutar servidor
+## Ejecutar servidor
 Se ejecuta el siguiente comando dentro de la carpeta raíz del proyecto
 ~~~
 php artisan serve
 ~~~
 
 ***
-##Referencias
+## Referencias
 * [Repositorio del proyecto](https://github.com/EspinozaRivera/revisor)
 * [Curso de Laravel](https://youtube.com/playlist?list=PLZ2ovOgdI-kWWS9aq8mfUDkJRfYib-SvF)
 * [Sptie](https://spatie.be/docs/laravel-permission/v4/introduction)
 * [JWT](https://jwt-auth.readthedocs.io/en/develop/)
 
-###Credenciales
+### Credenciales
 correosvalidatoruas@gmail.com
 Laravel777@
 
 ***
 
-#Endpoints
+# Endpoints
 
-##Login
+## Login
+
+Nota: La sesion del usuario tienen una duracion de 60 Minutos.
 
 >Tipo: **POST** 
 >http://localhost:8000/api/auth/login
@@ -62,7 +64,7 @@ Body:
 
 ***
 
-##Logout
+## Logout
 
 >Tipo: **POST** 
 >http://localhost:8000/admin/logout
@@ -71,7 +73,7 @@ Body:
 
 ***
 
-##Me
+## Me
 
 Obtiene informacion del usuario
 
@@ -82,9 +84,9 @@ Obtiene informacion del usuario
 
 ***
 
-##Usuarios
+## Usuarios
 
-###Listado de usuarios
+### Listado de usuarios
 
 Obtiene el listado de usuarios
 >Tipo: **GET** 
@@ -94,7 +96,7 @@ Obtiene el listado de usuarios
 
 ***
 
-###Usuario
+### Usuario
 
 Obtiene informacion de 1 usuario en especifio indicando el **ID** dentro de la URL
 
@@ -103,3 +105,48 @@ Obtiene informacion de 1 usuario en especifio indicando el **ID** dentro de la U
 
 >Requiere Bearer token: **sí**
 
+***
+
+### Agregar Usuario
+
+>Tipo: **POST** 
+>http://localhost:8000/api/auth/usuarios/agregar
+
+>Requiere Bearer token: **sí**
+
+Body:
+
+~~~
+{
+	"nombre": "Nombre",
+	"apellido1": "AP1",
+	"apellido2": "AP2",
+	"email": "correo@dominio.com",
+	"password": "password",
+	"estatus": true	
+}
+~~~
+
+***
+
+### Editar Usuario
+
+En el campo **role** va el **ID** del rol, este puede tener mas de 1 rol a la vez.
+
+>Tipo: **PUT** 
+>http://localhost:8000/api/auth/usuarios/agregar
+
+>Requiere Bearer token: **sí**
+
+Body:
+
+~~~
+{
+	"nombre": "Nombre",
+	"apellido1": "AP1",
+	"apellido2": "AP",
+	"email": "correo@dominio.com",
+	"roles": [2],
+	"estatus": true
+}
+~~~

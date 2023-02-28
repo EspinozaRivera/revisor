@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         $user->nombre = 'administrador';
         $user->apellido1 = 'ap1';
         $user->apellido2 = 'ap2';
-        $user->email = 'jotasbb@gmail.com';
+        $user->email = 'director.fim@uas.edu.mx';
         $user->password = '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'; // password
         $user->estatus = true;
         $user->save();
